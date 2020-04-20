@@ -1,5 +1,7 @@
 from flask import Flask
 
+from .controllers import register_blueprints
+
 app = Flask(__name__)
 
-from . import controllers
+register_blueprints(app)

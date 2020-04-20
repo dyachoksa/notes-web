@@ -1,26 +1,9 @@
-from flask import jsonify
+from flask import jsonify, Flask
 
-from .. import app
-
-
-@app.route("/")
-def index():
-    return """
-<html>
-<head>
-    <title>Notes App</title>
-</head>
-<body>
-    <h1>Notes Application</h1>
-</body>
-</html>
-    """
+from .home import home_blueprint
+from .notes import notes_blueprint
 
 
-@app.route("/notes")
-def notes():
-    notes = [
-        {"id": 1, "title": "First note", "content": "First note content"},
-    ]
-
-    return jsonify(notes)
+def register_blueprints(app: Flask):
+    app.register_blueprint(home_blueprint)
+    app.register_blueprint(notes_blueprint, url_prefix="/notes")

@@ -1,0 +1,24 @@
+
+  User                            Browser                          Server
+
+   Open page "/" on             GET http://127.0.0.1:5000/   ->    Protocol: http
+   site "localhost:5000"                                           Host: 127.0.0.1:5000      -> Flask
+                                                                   Url: /
+                                                                   Method: GET
+
+
+   Open page "/notes"           GET http://127.0.0.1:5000/notes  -> Protocol: ...
+                                                                    Host: ....                -> Flask
+                                                                    Url: /notes
+                                                                    Method: GET
+
+                                                                 <- HTML / JSON / XML
+
+
+www.notes.local
+app.notes.local
+
+admin.notes.local
+
+{admin} - subdomain name
+{notes.local} = domain name
