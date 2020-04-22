@@ -1,4 +1,4 @@
-from flask import jsonify, Flask
+from flask import Flask
 
 from .home import home_blueprint
 from .notes import notes_blueprint
