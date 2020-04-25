@@ -1,6 +1,6 @@
 import typing
 
-from flask import Blueprint
+from flask import Blueprint, render_template
 
 from ..db import get_db
 from ..models import Note
@@ -18,14 +18,7 @@ def get_list():
     db = get_db()
     notes = db.get_notes()
 
-    output = ["<ul>"]
-
-    for note in notes:
-        output.append(f"<li>{note.id}: {note.title}</li>")
-
-    output.append("</ul>")
-
-    return "".join(output)
+    return render_template("notes/index.html", notes=notes)
 
 
 @notes_blueprint.route("/1", endpoint="show")
@@ -34,4 +27,4 @@ def get_one():
 
     note = db.get_by_id(1)
 
-    return note.content
+    return render_template("notes/show.html", note=note)

@@ -1,17 +1,11 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 
 home_blueprint = Blueprint("home", __name__)
 
 
 @home_blueprint.route("/")
 def index():
-    return """
-<html>
-<head>
-    <title>Notes App</title>
-</head>
-<body>
-    <h1>Notes Application</h1>
-</body>
-</html>
-    """
+    app_name = "Notes App"
+    app_description = "Notes management application"
+
+    return render_template("index.html", name=app_name, description=app_description)
