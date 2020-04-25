@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes App</title>
-</head>
-
-<body>
+{% block content %}
     <h1>{{ name }}</h1>
     <p>{{ description }}</p>
-</body>
-
-</html>
+{% endblock %}
