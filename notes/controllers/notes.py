@@ -1,6 +1,6 @@
 import typing
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, abort
 
 from ..db import get_db
 from ..models import Note
@@ -21,10 +21,12 @@ def get_list():
     return render_template("notes/index.html", notes=notes)
 
 
-@notes_blueprint.route("/1", endpoint="show")
-def get_one():
+@notes_blueprint.route("/<int:note_id>", endpoint="show")
+def get_one(note_id):
     db = get_db()
 
-    note = db.get_by_id(1)
+    note = db.get_by_id(note_id)
+    if note is None:
+        return abort(404)
 
     return render_template("notes/show.html", note=note)
