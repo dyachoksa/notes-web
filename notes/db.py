@@ -12,7 +12,7 @@ def get_db() -> NotesService:
 
 
 def close_db(e=None):
-    print("Closing database connection...")
+    pass
 
 
 def init_app(app: Flask):

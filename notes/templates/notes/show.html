@@ -5,7 +5,16 @@
 {% block content %}
     <div class="d-flex flex-row justify-content-between align-items-center">
         <h1>{{ note.title }}</h1>
-        <a href="{{ url_for('notes.index') }}" class="btn btn-secondary">Back</a>
+
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <a href="{{ url_for('notes.index') }}" class="btn btn-secondary">Back</a>
+            <a href="{{ url_for('notes.edit', note_id=note.id) }}" class="btn btn-info">Edit</a>
+            <a
+                href="{{ url_for('notes.remove', note_id=note.id) }}"
+                class="btn btn-danger"
+                onclick="return confirm('Do you really want to delete this note?');"
+            >Delete</a>
+        </div>
     </div>
 
     <div class="mt-4">
