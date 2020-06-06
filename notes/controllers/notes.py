@@ -1,6 +1,6 @@
 import typing
 
-from flask import Blueprint, render_template, abort, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for
 
 from ..db import db
 from ..models import Note, Category
