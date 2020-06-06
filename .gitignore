@@ -99,3 +99,4 @@ ENV/
 .codeintel/
 .vscode
 notes.json
+app.db

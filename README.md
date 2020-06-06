@@ -42,3 +42,15 @@ or Windows CMD
 > set FLASK_APP=notes
 > flask run
 ```
+
+## Database
+```shell
+# init migrations
+$ flask db init
+
+# update database
+$ flask db upgrade
+
+# create new migration
+$ flask db migrate -m "<description>"
+```

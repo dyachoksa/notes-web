@@ -2,8 +2,8 @@ import typing
 
 from flask import Blueprint, render_template, abort, request, redirect, url_for
 
-from ..db import get_db
-from ..models import Note
+from ..db import db
+from ..models import Note, Category
 
 
 notes_blueprint = Blueprint("notes", __name__)
@@ -15,8 +15,7 @@ def format_notes(notes: typing.List[Note]):
 
 @notes_blueprint.route("/", endpoint="index")
 def get_list():
-    db = get_db()
-    notes = db.get_notes()
+    notes = Note.query.all()
 
     return render_template("notes/index.html", notes=notes)
 
@@ -32,39 +31,37 @@ def create():
             return render_template("notes/create.html", error=error, title=title, content=content)
 
         note = Note(
-            title=title, content=content
+            title=title,
+            content=content,
+            category_id=request.form.get("category_id", None)
         )
 
-        db = get_db()
-        db.create(note)
+        db.session.add(note)
+        db.session.commit()
 
         return redirect(url_for("notes.show", note_id=note.id))
 
-    return render_template("notes/create.html", title="", content="")
+    categories = Category.query.all()
+    return render_template("notes/create.html", categories=categories, title="", content="")
 
 
 @notes_blueprint.route("/<int:note_id>", endpoint="show")
 def get_one(note_id):
-    db = get_db()
-
-    note = db.get_by_id(note_id)
-    if note is None:
-        return abort(404)
+    note = Note.query.get_or_404(note_id)
 
     return render_template("notes/show.html", note=note)
 
 
 @notes_blueprint.route("/<int:note_id>/edit", methods=["GET", "POST"])
 def edit(note_id):
-    db = get_db()
-
-    note = db.get_by_id(note_id)
-    if note is None:
-        return abort(404)
+    note = Note.query.get_or_404(note_id)
+    categories = Category.query.all()
 
     if request.method == "POST":
         title = request.form["title"]
         content = request.form["content"]
+
+        note.category_id = request.form.get("category_id")
 
         if len(title) < 3 or len(content) < 3:
             error = "Please check your form. All fields are required."
@@ -72,26 +69,24 @@ def edit(note_id):
             note.title = title
             note.content = content
 
-            return render_template("notes/edit.html", error=error, note=note)
+            return render_template("notes/edit.html", categories=categories, error=error, note=note)
 
         note.title = title
         note.content = content
 
-        db.update(note)
+        db.session.add(note)
+        db.session.commit()
 
         return redirect(url_for("notes.show", note_id=note.id))
 
-    return render_template("notes/edit.html", note=note)
+    return render_template("notes/edit.html", categories=categories, note=note)
 
 
 @notes_blueprint.route("/<int:note_id>/remove")
 def remove(note_id):
-    db = get_db()
+    note = Note.query.get_or_404(note_id)
 
-    note = db.get_by_id(note_id)
-    if note is None:
-        return abort(404)
-
-    db.delete(note)
+    db.session.delete(note)
+    db.session.commit()
 
     return redirect(url_for("notes.index"))
